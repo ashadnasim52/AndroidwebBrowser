@@ -43,7 +43,7 @@
         android:layout_marginStart="48dp"
         android:fontFamily="cursive"
         android:gravity="start|center"
-        android:text="FEATURES:\n1) No history recorded\n2) Surf net anmously\n3)simple UI\n4) NO advertisment in app\n\n\nMADE BY :- ASHAD"
+        android:text="FEATURES:\n1) No history recorded\n2) Surf net anonymously\n3)simple UI\n4) NO advertisement in app\n\n\nMADE BY :- ASHAD"
         android:textColor="@color/primary_text"
         android:textSize="22sp"
         android:textStyle="bold"
