@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android web Browser</string>
+    <string name="title_activity_main_browser">MainBrowser</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Bookmarks</string>
+    <string name="title_notifications">Timing</string>
+</resources>
