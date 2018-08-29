@@ -46,7 +46,6 @@ public class WebBrowser extends AppCompatActivity {
     protected void onPostResume() {
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "You have already granted this permission!", Toast.LENGTH_SHORT).show();
             permissioncode=2;
         }
         else
@@ -74,6 +73,7 @@ public class WebBrowser extends AppCompatActivity {
             browser.clearMatches();
             browser.clearFormData();
             browser.clearSslPreferences();
+
             WebStorage.getInstance().deleteAllData();
 
             try
@@ -158,13 +158,9 @@ public class WebBrowser extends AppCompatActivity {
             //use checkSelfPermission()
             if (ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getApplicationContext(), "You have already granted this permission!",
-                        Toast.LENGTH_SHORT).show();
-                //TODO need to be remoaved toast
                 permissioncode=2;
 
 
-                //TODO heree do any thing if permission granted
 
 
 
@@ -204,7 +200,7 @@ public class WebBrowser extends AppCompatActivity {
 
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Private Browser");
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, contentDisposition);
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 dm.enqueue(request);
                 Toast.makeText(getApplicationContext(), "Downloading File", //To notify the Client that the file is being downloaded
@@ -249,7 +245,7 @@ public class WebBrowser extends AppCompatActivity {
      * Delete the files older than numDays days from the application cache
      * 0 means all files.
      */
-    public static void clearCache(final Context context, final int numDays) {
+    public static void clearCaache(final Context context, final int numDays) {
         Log.i("tag", String.format("Starting cache prune, deleting files older than %d days", numDays));
         int numDeletedFiles = clearCacheFolder(context.getCacheDir(), numDays);
         Log.i("tag", String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
@@ -263,7 +259,7 @@ public class WebBrowser extends AppCompatActivity {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"turn ON permission for uor app",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"turn ON permission for Private browser app",Toast.LENGTH_LONG).show();
                         //TODO change to our name of app
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         Uri uri = Uri.fromParts("package", getPackageName(), null);
@@ -296,7 +292,6 @@ public class WebBrowser extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == storagepermissioncode)  {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Click Again for Sending", Toast.LENGTH_SHORT).show();
                 permissioncode=2;
             } else {
                 sshowdialog();
