@@ -1,4 +1,4 @@
-package com.example.ashad.androidwebbrowser;
+package com.browser.ashad.androidwebbrowser;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -77,7 +77,7 @@ public class homfragment extends Fragment {
                     String com=".com";
                    Intent i=new Intent(getContext(),WebBrowser.class);
                    i.putExtra("site",htp.concat(urlwithuouthrrp).concat(com));
-                   Log.i("weber","is"+htp+urlwithuouthrrp);
+                   //.i("weber","is"+htp+urlwithuouthrrp);
                    startActivity(i);
                    seaaching.cancel();
                }

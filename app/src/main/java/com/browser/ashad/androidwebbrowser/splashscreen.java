@@ -1,4 +1,4 @@
-package com.example.ashad.androidwebbrowser;
+package com.browser.ashad.androidwebbrowser;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +17,7 @@ public class splashscreen extends AppCompatActivity {
             {
                 try
                 {
-                    sleep(2000);
+                    sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

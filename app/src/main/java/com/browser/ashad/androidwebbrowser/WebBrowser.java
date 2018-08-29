@@ -1,4 +1,4 @@
-package com.example.ashad.androidwebbrowser;
+package com.browser.ashad.androidwebbrowser;
 
 import android.Manifest;
 import android.app.DownloadManager;
@@ -22,16 +22,19 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.util.Date;
+import java.util.UUID;
 
 public class WebBrowser extends AppCompatActivity {
 
@@ -41,6 +44,7 @@ public class WebBrowser extends AppCompatActivity {
     int permissioncode;
     int storagepermissioncode=1;
     ImageButton bookmark,items,home;
+    ProgressBar prgrrb;
     Context mcontext;
     @Override
     protected void onPostResume() {
@@ -60,19 +64,20 @@ public class WebBrowser extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-
+        prgrrb.setVisibility(View.VISIBLE);
         if (browser.canGoBack())
         {
             browser.goBack();
+            prgrrb.setVisibility(View.INVISIBLE);
         }
         else
         {
-            super.onBackPressed();
             browser.clearCache(true);
             browser.clearHistory();
             browser.clearMatches();
             browser.clearFormData();
             browser.clearSslPreferences();
+            prgrrb.setVisibility(View.INVISIBLE);
 
             WebStorage.getInstance().deleteAllData();
 
@@ -84,6 +89,8 @@ public class WebBrowser extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
+            super.onBackPressed();
+
 
         }
     }
@@ -98,6 +105,7 @@ public class WebBrowser extends AppCompatActivity {
         bookmark=findViewById(R.id.bookmark);
         home=findViewById(R.id.homego);
         items=findViewById(R.id.sshowitems);
+        prgrrb=findViewById(R.id.progressBar2);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,12 +113,14 @@ public class WebBrowser extends AppCompatActivity {
               startActivity(i);
             }
         });
+        bookmark.setVisibility(View.INVISIBLE);
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
+        items.setVisibility(View.INVISIBLE);
         items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +139,7 @@ public class WebBrowser extends AppCompatActivity {
 
             public void onPageFinished(WebView view, String url) {
                 urlcontent.setText(browser.getOriginalUrl());
-                Log.i("ashadurl","is"+browser.getOriginalUrl());
+                //.i("ashadurl","is"+browser.getOriginalUrl());
 
                 view.clearCache(true);
 
@@ -137,15 +147,18 @@ public class WebBrowser extends AppCompatActivity {
         });
 
         urlcontent.setText(browser.getOriginalUrl());
-        Log.i("ashadurl","is"+browser.getOriginalUrl());
+        //.i("ashadurl","is"+browser.getOriginalUrl());
         swipecontainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 browser.reload();
-                Log.i("ashadmans","is "+browser.getProgress());
+                prgrrb.setVisibility(View.VISIBLE);
+
+                //.i("ashadmans","is "+browser.getProgress());
                 if (browser.getProgress()==10)
                 {
                     swipecontainer.setRefreshing(false);
+                    prgrrb.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -197,14 +210,22 @@ public class WebBrowser extends AppCompatActivity {
                                         long contentLength) {
                 DownloadManager.Request request = new DownloadManager.Request(
                         Uri.parse(url));
-
+                prgrrb.setVisibility(View.VISIBLE);
+                String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, contentDisposition);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName);
+                //.i("tpyebrois","url is"+url);
+
+                //.i("tpyebrois","useragent is"+userAgent);
+                //.i("tpyebrois","url contentdip"+contentDisposition);
+                //.i("tpyebrois","url mimetype"+mimetype);
+                //.i("tpyebrois","url length"+contentLength);
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 dm.enqueue(request);
                 Toast.makeText(getApplicationContext(), "Downloading File", //To notify the Client that the file is being downloaded
                         Toast.LENGTH_LONG).show();
+                prgrrb.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -235,7 +256,7 @@ public class WebBrowser extends AppCompatActivity {
                 }
             }
             catch(Exception e) {
-                Log.e("tag", String.format("Failed to clean the cache, error %s", e.getMessage()));
+                //.e("tag", String.format("Failed to clean the cache, error %s", e.getMessage()));
             }
         }
         return deletedFiles;
@@ -246,9 +267,9 @@ public class WebBrowser extends AppCompatActivity {
      * 0 means all files.
      */
     public static void clearCaache(final Context context, final int numDays) {
-        Log.i("tag", String.format("Starting cache prune, deleting files older than %d days", numDays));
+        //.i("tag", String.format("Starting cache prune, deleting files older than %d days", numDays));
         int numDeletedFiles = clearCacheFolder(context.getCacheDir(), numDays);
-        Log.i("tag", String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
+        //.i("tag", String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
     }
 
     public void sshowdialog()

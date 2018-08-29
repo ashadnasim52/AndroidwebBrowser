@@ -1,4 +1,4 @@
-package com.example.ashad.androidwebbrowser;
+package com.browser.ashad.androidwebbrowser;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
